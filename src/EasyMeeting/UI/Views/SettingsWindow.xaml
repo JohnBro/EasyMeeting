@@ -1,0 +1,106 @@
+<Window x:Class="EasyMeeting.UI.Views.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Settings - EasyMeeting" 
+        Height="520" 
+        Width="500"
+        WindowStartupLocation="CenterOwner"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False">
+    
+    <Window.Resources>
+        <Style x:Key="LabelStyle" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Margin" Value="0,0,0,5"/>
+        </Style>
+        <Style x:Key="HeaderStyle" TargetType="TextBlock">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Margin" Value="0,15,0,10"/>
+        </Style>
+        <Style x:Key="ModernTextBox" TargetType="TextBox">
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+        </Style>
+        <Style x:Key="ModernCombo" TargetType="ComboBox">
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="Margin" Value="0,0,0,15"/>
+        </Style>
+        <Style x:Key="ModernButton" TargetType="Button">
+            <Setter Property="Background" Value="#0078D4"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="20,10"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+    </Window.Resources>
+    
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock Text="General Settings" Style="{StaticResource HeaderStyle}"/>
+                
+                <TextBlock Text="Speech Engine" Style="{StaticResource LabelStyle}"/>
+                <ComboBox x:Name="SpeechEngineCombo" Style="{StaticResource ModernCombo}"/>
+                
+                <TextBlock Text="Audio Source" Style="{StaticResource LabelStyle}"/>
+                <ComboBox x:Name="AudioSourceCombo" Style="{StaticResource ModernCombo}"/>
+                
+                <TextBlock Text="Max Recording Duration (minutes)" Style="{StaticResource LabelStyle}"/>
+                <TextBox x:Name="MaxRecordingText" Style="{StaticResource ModernTextBox}"/>
+                
+                <TextBlock Text="Output Directory" Style="{StaticResource LabelStyle}"/>
+                <Grid Margin="0,0,0,15">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="OutputDirText" Grid.Column="0" Style="{StaticResource ModernTextBox}"/>
+                    <Button Grid.Column="1" Content="Browse" Margin="10,0,0,15" Padding="15,6" Click="BrowseButton_Click"/>
+                </Grid>
+                
+                <TextBlock Text="Summary Language" Style="{StaticResource LabelStyle}"/>
+                <ComboBox x:Name="SummaryLangCombo" Style="{StaticResource ModernCombo}">
+                    <ComboBoxItem Content="English" Tag="en"/>
+                    <ComboBoxItem Content="中文 (Chinese)" Tag="zh"/>
+                    <ComboBoxItem Content="日本語 (Japanese)" Tag="ja"/>
+                </ComboBox>
+                
+                <TextBlock Text="UI Language" Style="{StaticResource LabelStyle}"/>
+                <ComboBox x:Name="UiLangCombo" Style="{StaticResource ModernCombo}">
+                    <ComboBoxItem Content="English" Tag="en"/>
+                    <ComboBoxItem Content="中文 (Chinese)" Tag="zh"/>
+                </ComboBox>
+                
+                <Separator Margin="0,10"/>
+                
+                <TextBlock Text="LLM Settings" Style="{StaticResource HeaderStyle}"/>
+                
+                <TextBlock Text="Provider" Style="{StaticResource LabelStyle}"/>
+                <ComboBox x:Name="LlmProviderCombo" Style="{StaticResource ModernCombo}" SelectionChanged="LlmProviderCombo_SelectionChanged">
+                    <ComboBoxItem Content="OpenAI Compatible" Tag="openai"/>
+                    <ComboBoxItem Content="Claude" Tag="claude"/>
+                </ComboBox>
+                
+                <TextBlock Text="API Key" Style="{StaticResource LabelStyle}"/>
+                <PasswordBox x:Name="ApiKeyText" Margin="0,0,0,15" Padding="8,6"/>
+                
+                <TextBlock Text="Base URL" Style="{StaticResource LabelStyle}"/>
+                <TextBox x:Name="BaseUrlText" Style="{StaticResource ModernTextBox}"/>
+                
+                <TextBlock Text="Model" Style="{StaticResource LabelStyle}"/>
+                <TextBox x:Name="ModelText" Style="{StaticResource ModernTextBox}"/>
+            </StackPanel>
+        </ScrollViewer>
+        
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+            <Button Content="Cancel" Padding="20,10" Margin="0,0,10,0" Click="CancelButton_Click"/>
+            <Button Content="Save" Style="{StaticResource ModernButton}" Click="SaveButton_Click"/>
+        </StackPanel>
+    </Grid>
+</Window>

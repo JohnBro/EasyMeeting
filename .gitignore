@@ -1,0 +1,30 @@
+# Build outputs
+bin/
+obj/
+publish/
+*.user
+*.suo
+
+# NuGet
+*.nupkg
+packages/
+
+# IDE
+.vs/
+.vscode/
+*.useross
+*.suo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Whisper models (downloaded at runtime)
+*.bin
+*.model
+
+# Logs
+*.log
+
+# Config with secrets
+config.json

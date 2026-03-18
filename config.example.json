@@ -1,0 +1,15 @@
+{
+  "SpeechEngine": "Whisper",
+  "AudioSource": "Both",
+  "MaxRecordingMinutes": 180,
+  "SummaryLanguage": "en",
+  "OutputDirectory": "C:\\Users\\<username>\\.easymeeting",
+  "WhisperModelPath": "",
+  "Llm": {
+    "Provider": "openai",
+    "ApiKey": "your-api-key-here",
+    "BaseUrl": "https://api.openai.com/v1",
+    "Model": "gpt-4o-mini",
+    "SummaryPrompt": "Summarize the following transcription in {language} language:\n\n{text}"
+  }
+}

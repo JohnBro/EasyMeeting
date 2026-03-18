@@ -1,0 +1,174 @@
+<Window x:Class="EasyMeeting.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:models="clr-namespace:EasyMeeting.Models"
+        Title="EasyMeeting - Speech to Text" 
+        Height="650" 
+        Width="1000"
+        MinHeight="500"
+        MinWidth="800"
+        WindowStartupLocation="CenterScreen">
+    
+    <Window.Resources>
+        <Style x:Key="ModernButton" TargetType="Button">
+            <Setter Property="Background" Value="#0078D4"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="4"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#106EBE"/>
+                </Trigger>
+                <Trigger Property="IsEnabled" Value="False">
+                    <Setter Property="Background" Value="#CCCCCC"/>
+                    <Setter Property="Foreground" Value="#888888"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+        <Style x:Key="DangerButton" TargetType="Button" BasedOn="{StaticResource ModernButton}">
+            <Setter Property="Background" Value="#D13438"/>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="#A4262C"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Resources>
+    
+    <Grid Background="#F3F3F3">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <!-- Header -->
+        <Border Grid.Row="0" Background="White" Padding="20,15" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Grid.Column="0" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="🎤" FontSize="28" VerticalAlignment="Center" Margin="0,0,10,0"/>
+                    <TextBlock Text="EasyMeeting" FontSize="22" FontWeight="SemiBold" Foreground="#0078D4" VerticalAlignment="Center"/>
+                    <TextBlock Text="Speech to Text" FontSize="14" Foreground="#666666" VerticalAlignment="Center" Margin="10,0,0,0"/>
+                </StackPanel>
+                
+                <StackPanel Grid.Column="1" Orientation="Horizontal">
+                    <Button x:Name="SettingsButton" Content="⚙️ Settings" Style="{StaticResource ModernButton}" 
+                            Background="Transparent" Foreground="#333333" Click="SettingsButton_Click"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+        
+        <!-- Controls -->
+        <Border Grid.Row="1" Background="White" Padding="20,15" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled">
+                <StackPanel Orientation="Horizontal">
+                <!-- Audio Source Selection -->
+                <StackPanel Orientation="Horizontal" Margin="0,0,30,0">
+                    <TextBlock x:Name="AudioSourceLabel" Text="Audio Source:" VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,0,10,0"/>
+                    <ComboBox x:Name="AudioSourceCombo" Width="180" VerticalContentAlignment="Center" FontSize="14"/>
+                </StackPanel>
+                
+                <!-- Speech Engine Selection -->
+                <StackPanel Orientation="Horizontal" Margin="0,0,30,0">
+                    <TextBlock x:Name="SpeechEngineLabel" Text="Speech Engine:" VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,0,10,0"/>
+                    <ComboBox x:Name="EngineCombo" Width="150" VerticalContentAlignment="Center" FontSize="14"/>
+                </StackPanel>
+                
+                <!-- Recording Duration -->
+                <StackPanel Orientation="Horizontal" Margin="0,0,30,0">
+                    <TextBlock x:Name="DurationLabel" Text="Duration:" VerticalAlignment="Center" FontWeight="SemiBold" Margin="0,0,10,0"/>
+                    <TextBlock x:Name="DurationText" Text="00:00:00" VerticalAlignment="Center" FontSize="14" FontFamily="Consolas"/>
+                </StackPanel>
+                
+                <!-- Recording Indicator -->
+                <Border x:Name="RecordingIndicator" Visibility="Collapsed" Background="#D13438" CornerRadius="10" Padding="10,5" Margin="0,0,20,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Width="10" Height="10" Fill="White" Margin="0,0,8,0"/>
+                        <TextBlock x:Name="RecLabel" Text="REC" Foreground="White" FontWeight="Bold" FontSize="12"/>
+                    </StackPanel>
+                </Border>
+                
+                <!-- Start/Stop Buttons -->
+                <Button x:Name="StartButton" Content="▶ Start Recording" Style="{StaticResource ModernButton}" 
+                        Click="StartButton_Click" Margin="0,0,10,0"/>
+                <Button x:Name="StopButton" Content="⏹ Stop" Style="{StaticResource DangerButton}" 
+                        IsEnabled="False" Click="StopButton_Click"/>
+            </StackPanel>
+            </ScrollViewer>
+        </Border>
+        
+        <!-- Transcript Display -->
+        <Border Grid.Row="2" Margin="20" Background="White" CornerRadius="8" BorderBrush="#E0E0E0" BorderThickness="1">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                
+                <Border Grid.Row="0" Background="#F8F8F8" Padding="15,10" BorderBrush="#E0E0E0" BorderThickness="0,0,0,1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock x:Name="LiveTranscriptionLabel" Text="Live Transcription" FontWeight="SemiBold" FontSize="14" VerticalAlignment="Center"/>
+                        <Button Grid.Column="1" x:Name="ClearButton" Content="Clear" Background="Transparent" Foreground="#0078D4" 
+                                BorderThickness="0" Cursor="Hand" Click="ClearButton_Click"/>
+                    </Grid>
+                </Border>
+                
+                <TextBox x:Name="TranscriptBox" Grid.Row="1"
+                         Text="{Binding Transcript, Mode=OneWay}"
+                         IsReadOnly="True"
+                         TextWrapping="Wrap"
+                         VerticalScrollBarVisibility="Auto"
+                         HorizontalScrollBarVisibility="Disabled"
+                         BorderThickness="0"
+                         Padding="15"
+                         FontSize="14"
+                         FontFamily="Segoe UI"
+                         AcceptsReturn="True"/>
+            </Grid>
+        </Border>
+        
+        <!-- Status Bar -->
+        <Border Grid.Row="3" Background="#0078D4" Padding="15,8">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                
+                <TextBlock x:Name="StatusText" Text="Ready - Click Start Recording to begin" 
+                           Foreground="White" VerticalAlignment="Center" FontSize="12"/>
+                 
+                <TextBlock x:Name="OutputDirText" Grid.Column="1" Text="" 
+                           Foreground="#CCCCCC" VerticalAlignment="Center" FontSize="11" Margin="0,0,20,0"/>
+                 
+                <TextBlock x:Name="HotkeyHint" Grid.Column="2" Text="Ctrl+Shift+Space: Toggle Preview" 
+                           Foreground="#AAAAAA" VerticalAlignment="Center" FontSize="11"/>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
