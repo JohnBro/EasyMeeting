@@ -19,7 +19,7 @@
     
     <!-- Speech Recognition (Whisper) -->
     <PackageReference Include="Whisper.net" Version="1.9.0" />
-    <PackageReference Include="Whisper.net.Runtime" Version="1.9.0" />
+    <PackageReference Include="Whisper.net.AllRuntimes" Version="1.9.0" />
     
     <!-- Windows Speech Recognition -->
     <PackageReference Include="System.Speech" Version="8.0.0" />

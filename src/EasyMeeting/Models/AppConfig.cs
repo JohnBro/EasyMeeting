@@ -4,6 +4,7 @@ namespace EasyMeeting.Models;
 
 public enum SpeechEngineType { Whisper, SAPI }
 public enum AudioSourceType { SystemAudio, Microphone, Both }
+public enum WhisperModelSize { Tiny, Base, Small, Medium, LargeV3Turbo }
 
 public class AppConfig
 {
@@ -16,6 +17,8 @@ public class AppConfig
         Environment.GetFolderPath(Environment.SpecialFolder.UserProfile),
         ".easymeeting");
     public string WhisperModelPath { get; set; } = string.Empty;
+    public WhisperModelSize WhisperModelSize { get; set; } = WhisperModelSize.Base;
+    public double AudioBufferSeconds { get; set; } = 3.0;
     public LlmConfig Llm { get; set; } = new();
 }
 
